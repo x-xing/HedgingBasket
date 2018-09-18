@@ -1,0 +1,25 @@
+1. Maybe we should impute missing data instead of simply dropping them? 
+	for two reasons: 
+	a)we can lose valuable information 
+	b)in reality some missing data might be due to legit reasons such as holidays in certain regions while others might not. Or some stocks may undergo trading halt or trading suspension. It is helpful that our model can handle such situations.
+	
+	To impute missing data, we should use "forward filling" option in pandas, which means the price is as "last observation carried forward", or "LOCF". We should not use mean/median values or backward filling, as they may lead to information leakage from "future" in some cases.
+
+2. Issues with bootstrapping.
+	bootstrapping is useful to determine the errors of an estimate, but it can create overlap between train and test data leading to information leakage. About two-thirds (~ 1-1/e) of the original data points appear in each bootstrap sample.
+	
+	Cross validation is a better route.
+
+3. Time series or not?
+	we are not dealing with time series in this problem, even though the stock prices are functions of time. Since we are looking for a hedging basket, we not dealing with the price change as a function of time directly, but rather the (time-insensitive) relationship between some stocks and target instruments.
+	
+4. Cross validation
+	we can use cross validation to tune the hyperparameters of the model, but again we should use another cross validation process to test the performance on certain test data set. Thus, we should use a nested cross validation approach.
+	
+	Note that we should not perform any feature selection procedure outside of cross validation process, as this may lead to a biased estimate,  or an under-estimate of the variance of the estimate (or both).
+	
+5. Can we safely drop features that are highly correlated (e.g., >0.9)? 
+
+6. In CV, use hold out validation (where in the train/validate part we can use CV), or nested CV?
+
+7. Use catergorical data as "group by" options, and make use of it in CV?
